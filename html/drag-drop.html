@@ -1,0 +1,27 @@
+<head>
+    <script>
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+        function drag(params) {
+            params.dataTransfer.setData("dd", params.target.id)
+        }
+        function drop(ev) {
+            ev.preventDefault()
+            var data = ev.dataTransfer.getData("dd")
+            ev.target.appendChild(document.getElementById(data))
+        }
+    </script>
+    <style>
+        div {    width: 200px; height:100px; margin: 10px ; border: 1px solid #000;}
+    </style>
+</head>
+
+<body>
+    <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <img id="drag1" src="http://www.w3school.com.cn//i/eg_dragdrop_w3school.gif" draggable="true"
+         ondragstart="drag(event)" />
+    </div>
+    <!-- 一定要是event -->
+    <div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+</body>

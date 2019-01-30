@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <p>计数:
+        <output id="result"></output>
+    </p>
+    <button onclick="start()">开始</button>
+    <button onclick="stop()">停止</button>
+    <script>
+        var w;
+        function start() {
+            if (typeof (Worker) !== undefined) {
+                if (w == undefined) {
+                    w = new Worker("/resources/demo-worker.js")
+                }
+                w.onmessage = function (event) {
+                    document.getElementById("result").innerHTML = event.data;
+                }
+            } else {
+                document.getElementById("result").innerHTML = "浏览器不支持Web WOrk";
+            }
+        }
+
+        function stop() {
+            w.terminate();
+        }
+    </script>
+</body>
+
+</html>

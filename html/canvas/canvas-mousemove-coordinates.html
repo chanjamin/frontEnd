@@ -1,0 +1,22 @@
+<style>
+    body{
+        font-size: 70%;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;   
+
+    }
+</style>
+<script>
+    function getCoordinates(e   ) {
+        x=e.clientX;
+        y=e.clientY;
+        document.getElementById("xycoordinates").innerHTML="Coordinates: (" + x + "," + y + ")";
+    }
+    function clearCoordinates() {
+        document.getElementById("xycoordinates").innerHTML="";
+    }
+</script>
+<body>
+    <p>把鼠标悬停在下面的矩形上可以看到坐标：</p>
+    <canvas id="coorDiv" style="float: left;height: 190px;width: 190px;border: 1px solid rgb(12, 2, 2);" onmousemove="getCoordinates(e)" onmouseout="clearCoordinates()"></canvas>
+    <div id="xycoordinates"></div>
+</body>

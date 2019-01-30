@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        <form>
+                <label>Name:</label>
+                <input name="name" />
+                <fieldset>
+                    <label>Newsletter:</label>
+                    <input name="newsletter" />
+                    <input name="newsletter" />
+                    <input name="newsletter" />
+               </fieldset>
+              </form>
+              <input name="none" />
+</body>
+<script src="https://cdn.bootcss.com/jquery/1.10.1/jquery.js"></script>
+<script>
+//    祖先-后代选择器
+    $("form input").css("background-color","yellow")
+    //父-子选择器
+    $("form>input").css("border","5px solid")
+    //匹配所有紧接在 prev 元素后的 next 元素
+    $("label+input").css("height","50px")
+    //匹配 prev 元素之后的所有 同辈 元素
+    $("form~input").css("background-color","red")
+</script>
+</html>

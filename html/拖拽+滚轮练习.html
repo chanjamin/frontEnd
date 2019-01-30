@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #box1 {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            position: absolute;
+        }
+        #box2 {
+            width: 100px;
+            height: 100px;
+            background-color: yellow;
+            position: absolute;
+            left: 200px;
+            top: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box1"></div>
+    <div id="box2"></div>
+</body>
+<script>
+    var box1 = document.getElementById("box1");
+    drag(box1);
+    drag(box2)
+    /**box1.onmousedown = **/function name(params) {
+        // 不对的，只是刚好罢了
+        // var XInit=params.clientX;
+        // var YInit=params.clientY;
+        // MouseEvent.offsetX鼠标指针相对于目标节点内边位置的X坐标
+        var XInit=params.offsetX;
+        var YInit=params.offsetY;
+        document.onmousemove = function name(params) {
+            box1.style.left = params.clientX-XInit+"px";
+            box1.style.top = params.clientY-YInit+"px";
+            //取消浏览器默认搜索功能
+            params.preventDefault();
+            return false;
+        }
+        box1.onmouseup=function(ev){
+            document.onmousemove=null;  
+        }    
+    }
+
+    // 重构
+    function drag(obj){
+        obj.onmousedown=function name(params) {
+
+        var XInit=params.offsetX;
+        var YInit=params.offsetY;
+        document.onmousemove = function name(params) {
+            obj.style.left = params.clientX-XInit+"px";
+            obj.style.top = params.clientY-YInit+"px";
+            //取消浏览器默认搜索功能
+            params.preventDefault();
+            return false;
+        }
+        obj.onmousewheel=function(event){
+            obj.style.height=event.deltaY+obj.style.height+"px";
+        }
+        obj.onmouseup=function(ev){
+            document.onmousemove=null;  
+        }    
+    }
+    }
+</script>
+
+</html>

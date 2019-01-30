@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>>Node Removal Events Example</title>
+</head>
+
+<body>
+    <ul id="myList">
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+    </ul>
+</body>
+<script>
+    var EventUtil = {
+        addHandler: function (element, type, handler) {         //省略的代码   
+        },
+        getEvent: function (event) { return event ? event : window.event; },
+        getTarget: function (event) { return event.target || event.srcElement; },
+        preventDefault: function (event) { if (event.preventDefault) { event.preventDefault(); } else { event.returnValue = false; } },
+        removeHandler: function (element, type, handler) {         //省略的代码    
+            if (event.stopPropagation) { event.stopPropagation(); } else { event.cancelBubble = true; }
+        }
+    }
+    // window.onload = function () {
+    EventUtil.addHandler(window, "load", function (event) {
+        var list = document.getElementById("myList");
+        EventUtil.addHandler(document, "DOMSubtreeModified", function (event) {
+            alert(event.type);
+            alert(event.target)
+        })
+        EventUtil.addHandler(document, "DOMNodeRemoved", function (event) { alert(event.type); alert(event.target); alert(event.relatedNode); });
+        EventUtil.addHandler(list.firstChild, "DOMNodeRemovedFromDocument", function (event) {
+            alert(event.type);
+            alert(event.target)
+        })
+        list.parentNode.removeChild(list);
+        EventUtil.addHandler(window, "beforeunload", function (event) {
+            event = EventUtil.getEvent(event); var message = "I'm really going to miss you if you go.";
+             event.returnValue = message; return message;
+        });
+    })
+    // }
+</script>
+
+</html>
