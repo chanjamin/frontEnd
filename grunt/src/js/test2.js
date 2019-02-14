@@ -1,0 +1,4 @@
+(function () {
+    var arr=[1,2,3,4].map(value => value*10)
+    console.log(arr)
+})()
