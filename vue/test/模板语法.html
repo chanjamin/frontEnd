@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="a1">
+    <input v-model="msg">
+    <span v-once>这个不会改变{{msg}}</span>
+    <p>Using mustaches: {{ rawHtml }}</p>
+    <p>Using v-html directive:<span v-html="rawHtml"></span></p>
+    <p v-if="seen">现在你看到我了</p>
+    <a v-bind:href="url">百度</a>
+    <a :href="url">百度</a>
+    <a v-on:click="doit" href="#">点击</a>
+    <a @click="doit"  href="#">点击</a>
+</div>
+<div id="demo">{{ fullName }}</div>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.js"></script>
+
+<script>
+    new Vue({
+        el: '#a1',
+        data: {
+            msg: 'fasdfasd',
+            rawHtml: '<b>这是粗体</b>',
+            seen:true,
+            url:'http://www.baidu.com',
+            'doit':function () {
+                alert("fjapsovao;")
+            }
+        }
+    })
+    var vm = new Vue({
+        el: '#demo',
+        data: {
+            firstName: 'Foo',
+            lastName: 'Bar'
+        },
+        computed: {
+            fullName: function () {
+                return this.firstName + ' ' + this.lastName
+            }
+        }
+    })
+
+
+</script>
+</html>

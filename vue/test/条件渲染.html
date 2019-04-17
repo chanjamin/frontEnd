@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="div">
+    <p v-if="ok">OK</p>
+    <p v-else>失败</p>
+    <hr>
+    <p v-show="ok">OK</p>
+    <p v-show="!ok">Lose</p>
+    <button @click="ok=!ok">切换</button>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.js"></script>
+<script>
+    new Vue({
+        el:'#div',
+        data:{ok:true}
+    })
+</script>
+</html>

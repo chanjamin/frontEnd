@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="example">
+<p>Original message: "{{ message }}"</p>
+<p>Computed reversed message: "{{ reversedMessage }}"</p>
+    <p>Reversed message: "{{ reversedM() }}"</p>
+</div>
+
+<div id="demo">{{ fullName }}</div>
+
+<div id="watch-example">
+    <p>Ask a yes/no question:
+        <input v-model="question">
+    </p>
+    <p>{{answer}}</p>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+<script>
+    setInterval(()=>console.log(vm.now),100)
+    var vm=new Vue({
+        el:'#example',
+        data:{
+            message:'Hello'
+        },
+        computed:{
+            reversedMessage:function () {
+                return this.message.split('').reverse().join('');
+            },
+            now:function () {
+                return Date.now();//不会更新，没有依赖
+            }
+        },
+        methods:{
+            reversedM:function () {
+                return this.message.split('').reverse().join('');
+            }
+        }
+    })
+    //Vue 知道 vm.reversedMessage 依赖于 vm.message，因此当 vm.message 发生改变时，所有依赖 vm.reversedMessage 的绑定也会更新
+
+
+    //计算属性的setter
+    var vm2 = new Vue({
+        el: '#demo',
+        data: {
+            firstName: 'Foo',
+            lastName: 'Bar'
+        },
+        computed: {
+            fullName:{
+                set:function (newValue) {
+                    var s=newValue.split(' ');
+                    this.firstName=s[0];
+                    this.lastName=s[s.length-1]
+                },
+                get:function () {
+                    return this.firstName + ' ' + this.lastName
+                }
+            }
+        }
+    })
+
+    //侦听器
+
+
+    new Vue({
+        el:'#watch-example',
+        data:{
+            question: '',
+            answer:'I cannot give you an answer until you ask a question!'
+        },
+        watch:{
+            /// 如果 `question` 发生改变，这个函数就会运行
+            question: function (newV, oldV) {
+                this.answer = 'Waiting for you to stop typing...'
+                this.debouncedGetAnswer()
+            },
+        },
+        created:function () {
+            this.debouncedGetAnswer=_.debounce(this.getAnswer,500);
+        },
+        methods: {
+            getAnswer:function () {
+                this.answer='Thinking';
+                var vm=this
+                axios.get('https://yesno.wtf/api')
+                    .then(function (resp) {
+                        vm.answer=_.capitalize(resp.data.answer)
+                    })
+                    .catch(function (err) {
+                        vm.answer = 'Error! Could not reach the API. ' + error
+                    })
+            }
+        }
+    })
+</script>
+</html>

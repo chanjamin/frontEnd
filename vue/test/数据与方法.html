@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<span id="example"></span>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.js"></script>
+<script>
+    var data={a:1}
+
+    let vm=new Vue({
+        el:'#example',
+        data:data,
+        create:function () {
+            console.log("vue instance is created ")
+        }
+    })
+
+    vm.$watch('a',function (newValue, oldValue) {
+        console.log("a is changed")
+    })
+
+    console.log(vm.a===data.a)
+
+    vm.a=2;
+    console.log(data.a)
+    data.a=3;
+    console.log(vm.a)
+
+    console.log(vm.$data===data)
+
+    console.log(vm.$el===document.getElementById("example"))
+
+</script>
+</html>

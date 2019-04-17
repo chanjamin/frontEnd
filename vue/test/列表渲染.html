@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="div">
+    <li v-for="item in items">
+        {{item.message}}
+    </li>
+    <p> 在 v-for 块中，我们拥有对父作用域属性的完全访问权限</p>
+    <li v-for="(item,index) in items">
+        {{patent}}_{{index}}——{{item.message}}
+        <button @click="deleteP(index)">删除</button>
+        <button @click="update(index, {name:'Fuuu',message: '44444444'})">更新</button>
+    </li>
+    <li v-for="item of items">{{item.message}}</li>
+    <p>遍历对象</p>
+    <li v-for="(value,key,index) in obj">
+        {{index}},{{key}}:{{value}}
+    </li>
+</div>
+<div id="div2">
+    <p>过滤与排序</p>
+    <input type="text" v-model="searchText">
+    <ul>
+        <li v-for="(index,p) in filterP">
+            {{index}}-{{p.name}}--{{p.age}}
+        </li>
+    </ul>
+    <div>
+        <button @click="setOrderType(2)">年龄升序</button>
+        <button @click="setOrderType(1)">年龄降序</button>
+        <button @click="setOrderType(0)">原本顺序</button>
+    </div>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.js"></script>
+<script>
+    new Vue({
+        el: '#div',
+        data: {
+            patent: 'Nishi打包',
+            items: [
+                {name: 'Tom', message: '11111111111'},
+                {name: 'Jack', message: '22222222'},
+                {name: 'Bob', message: '3333333333'}
+            ],
+            obj: {
+                firstName: 'John',
+                lastName: 'Doe',
+                age: 30
+            }
+        },
+        methods: {
+            'deleteP': function (index) {
+                this.items.splice(index, 1)
+            },
+            update: function (index, nv) {
+                this.items.splice(index, 1, nv)
+            }
+        }
+    })
+    new Vue({
+        el: '#div2',
+        data: {
+            searchText: '',
+            item: [{name: 'Tom', age: 18},
+                {name: 'Jack', age: 17},
+                {name: 'Bob', age: 19},
+                {name: 'Mary', age: 16}]
+            , orderType: 0
+        },
+        computed:{
+            filterP(){
+                this.item.filter()
+            }
+        }
+    })
+
+</script>
+</html>

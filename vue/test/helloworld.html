@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="username">
+    <p>Hello, {{username}}</p>
+</div>
+<div id="app2">
+    <span v-bind:title="message">鼠标悬停几秒钟查看此处动态绑定的提示信息！</span>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.js"></script>
+<script>
+    new Vue({
+        el:'#app',
+        data:{
+            username:'cjm'
+        }
+    })
+    app2=new Vue({
+        el:'#app2',
+        data:{
+            message:'页面加载于'+new Date().toDateString()
+        }
+    })
+</script>
+</body>
+</html>

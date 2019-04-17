@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="div1" v-bind:class="{ active: isActive }">faposh;va;df</div>
+<div id="div2"
+        class="static"
+        v-bind:class="{ active: isActive, 'text-danger': hasError }"
+>foq;nfaksdl</div>
+<div id="div3" v-bind:class="classObject">11111111111111</div>
+<div id="div4" v-bind:class="classObject">11111111111111</div>
+<div id="div5" v-bind:class="[activeClass, errorClass]">aaaaaaaaaaaaaaaaaaa</div>
+<my-component id="my-component" class="baz boo"></my-component>
+<div class="myc" v-bind:style="{color:activeColor,fontSize:fs+'px'}">bbbbbbbbbbbbbbbbbbbbb</div>
+<div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.js"></script>
+<script>
+    var vm=new Vue({
+      el:  '#div1',
+        data:{
+          isActive:false
+        }
+    })
+
+    var vm2=new Vue({
+        el:  '#div2',
+        data:{
+            isActive:true,
+            hasError: true
+        }
+    })
+    var vm3=new Vue({
+        el:  '#div3',
+        data:{
+            classObject:{
+                active:true,
+                'text-danger':true,
+                whatever:false
+            }
+        }
+    })
+    const vm4=new Vue({
+        el:  '#div4',
+        data:{
+            isActive:true,
+            error: null
+        },
+        computed:{
+            classObject:function () {
+                return {
+                    active:this.isActive&&!this.error,
+                    'text-danger':this.error&&this.error.type==='fatal'
+                }
+            }
+        }
+    })
+
+    var vm5=new Vue({
+        el:  '#div5',
+        data:{
+            activeClass:'active',
+            errorClass:'error'
+        }
+    })
+
+    //用在组件上
+    Vue.component('my-component',{
+        template:'<p class="foo bar">21341324</p>'
+    })
+    new Vue({el:'my-component'})
+
+</script>
+<script>
+    new Vue({
+        el:'.myc',
+        data:{activeColor:'red',fs:40}
+    })
+
+    //对象，计算属性，数组同理
+</script>
+</html>
