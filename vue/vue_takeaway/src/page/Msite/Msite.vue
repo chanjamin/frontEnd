@@ -277,8 +277,19 @@
 </template>
 
 <script>
+  import Swiper from 'swiper'
+  import 'swiper/dist/css/swiper.min.css'
   export default {
-    name: "Msite"
+    name: "Msite",
+    //vue生命周期钩子
+    mounted() {
+      new Swiper('.swiper-container',{
+        pagination:{
+          el:'.swiper-pagination'
+        },
+        loop:true
+      })
+    }
   }
 </script>
 
