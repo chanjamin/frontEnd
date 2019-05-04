@@ -1,6 +1,6 @@
 <template>
   <section class="search">
-    <HeaderTop title="搜索"/>
+    <HeaderTop title="搜索"></HeaderTop>
     <form class="search_form" @submit.prevent="search">
       <input type="search" placeholder="请输入商家名称" class="search_input" v-model="keyword">
       <input type="submit" class="search_submit">
@@ -31,8 +31,13 @@
 </template>
 
 <script>
-    export default {
-        name: "search"
+  import HeaderTop from '../../components/HeaderTop/HeaderTop';
+
+  export default {
+        name: "search",
+      components:{
+          HeaderTop:HeaderTop
+      }
     }
 </script>
 

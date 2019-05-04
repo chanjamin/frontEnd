@@ -6,10 +6,7 @@
 </head>
 <body>
 <div id="app">
-    <ol>
-        <todo-item></todo-item>
-        <todo-item></todo-item>
-    </ol>
+    <btn-counter></btn-counter>
 </div>
 <hr>
 适用v-bind
@@ -26,13 +23,15 @@
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.js"></script>
 <script>
-    Vue.component('todo-item', {
-        template: '<li>这是个待办事项</li>'
-    })
+    Vue.component('btn-counter', {
+        data:function(){//一个组件的 data 选项必须是一个函数，因此每个实例可以维护一份被返回对象的独立的拷贝：
+            return {count:0};
+        },
+        template: '<button @click="count++">you  clicked me {{count}}  times.</button>'
+    });
+
     Vue.component('todo-item2', {
-        // todo-item 组件现在接受一个
-        // "prop"，类似于一个自定义特性。
-        // 这个 prop 名为 todo。
+        //todo 来自于组件标签
         props: ['todo'],
         template: '<li>{{todo.text}}</li>'
     })

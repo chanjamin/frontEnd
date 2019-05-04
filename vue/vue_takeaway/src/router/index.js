@@ -5,7 +5,8 @@ import Router from 'vue-router'
 import Msite from '../page/Msite/Msite'
 import Search from '../page/search/search'
 import Order from '../page/order/order.vue'
-import Profile from '../page/profile/profile'
+import Profile from '../page/profile/profile';
+import Login from '../page/Login/Login';
 Vue.use(Router)
 
 //es6导出
@@ -17,19 +18,35 @@ export default new Router({
     },
     {
       path:'/msite',
-      component:Msite
+      component:Msite,
+      meta:{
+        showFooter:true
+      }
     },
     {
       path:'/search',
-      component: Search
+      component: Search,
+      meta:{
+        showFooter:true
+      }
     },
     {
       path:'/order',
-      component: Order
+      component: Order,
+      meta:{
+        showFooter:true
+      }
     },
     {
       path:'/profile',
-      component: Profile
+      component: Profile,
+      meta:{
+        showFooter:true
+      }
+    },
+    {
+      path:'/login',
+      component: Login
     }
   ]
 })
