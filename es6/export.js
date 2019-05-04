@@ -8,4 +8,5 @@
     class myClass {
         static a='yeah'
     }
-    export{myClass,myName,age,myfn}
+    export{a,myName,age,myfn}
+export default {myClass,myName,age,myfn}

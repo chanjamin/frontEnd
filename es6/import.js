@@ -1,5 +1,9 @@
-import  {myClass,myName,age,myFn} from "./export.js"
+// import  {a,myName,age,myFn} from "./export.js"
 {
     console.log(myFn())
-    console.log(myClass.a)
+}
+import a from  './export'
+{
+    console.log(a.myName)
+    console.log(a.age)
 }
