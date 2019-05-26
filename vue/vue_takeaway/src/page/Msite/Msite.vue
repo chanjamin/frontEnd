@@ -3,15 +3,17 @@
 
     <!--头部-->
 
-      <HeaderTop v-bind:title="address.name" >
-<!--        指定插入name=search的插槽-->
-        <a class="header_search" slot="search">
-          <i class="iconfont icon-sousuo"></i>
-        </a>
-        <a class="header_login" slot="login">
-          <span class="header_login_text">登录|注册</span>
-        </a>
-      </HeaderTop>
+    <HeaderTop v-bind:title="address.name">
+      <!--        指定插入name=search的插槽-->
+      <router-link to="search" class="header_search" slot="search">
+        <i class="iconfont icon-sousuo"></i>
+      </router-link>
+
+      <router-link class="header_login" slot="login" :to="userInfo._id?'/userinfo':'/login'">
+        <span class="header_login_text">登录|注册</span>
+      </router-link>
+
+    </HeaderTop>
 
     <!--导航-->
 
@@ -49,6 +51,7 @@
   import {mapState} from 'vuex';
   import HeaderTop from '../../components/HeaderTop/HeaderTop';
   import ShopList from '../../components/ShopList/ShopList.vue';
+
   export default {
     name: "Msite",
     data() {
@@ -56,35 +59,35 @@
         baseUrl: 'https://fuss10.elemecdn.com/'
       }
     },
-    components:{
-      HeaderTop,ShopList
+    components: {
+      HeaderTop, ShopList
     },
     //侦听属性
-    watch:{
-      categorys(value){//value是它自己的加强对象
+    watch: {
+      categorys(value) {//value是它自己的加强对象
         //将回调延迟到下次 DOM 更新循环之后执行，不然这个渲染会被无视
         this.$nextTick(() => {
-          new Swiper('.swiper-container',{
-            pagination:{
-              el:'.swiper-pagination'
+          new Swiper('.swiper-container', {
+            pagination: {
+              el: '.swiper-pagination'
             },
-            loop:true
+            loop: true
           })
         })
       }
     },
-    computed:{
+    computed: {
       //vuex ,相当于把state映射到data
-      ...mapState(['address','categorys']),
+      ...mapState(['address', 'categorys','userInfo']),
       //根据categorys生成二维数组
-      categorysArr(){
-        const {categorys}=this;
-        let arr=[];
-        let minArr=[];
-        categorys.forEach(c=>{
-          if(minArr.length===8){
+      categorysArr() {
+        const {categorys} = this;
+        let arr = [];
+        let minArr = [];
+        categorys.forEach(c => {
+          if (minArr.length === 8) {
             arr.push(minArr);
-            minArr=[];
+            minArr = [];
           }
           minArr.push(c);
 
@@ -103,7 +106,7 @@
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../common/stylus/mixins.styl"
   .msite
-    width:100%
+    width: 100%
     .msite_nav
       bottom-border-1px(#e4e4e4)
       margin-top 45px
@@ -139,7 +142,7 @@
                 font-size 13px
                 color #666
               .swiper-pagination
-                >span.swiper-pagination-bullet-active
+                > span.swiper-pagination-bullet-active
                   background #02a774
     .msite_shop_list
       top-border-1px(#e4e4e4)
