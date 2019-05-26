@@ -3,7 +3,7 @@
 
     <!--头部-->
 
-      <HeaderTop title="昌平区北七家宏福科技园(337省道北)">
+      <HeaderTop v-bind:title="address.name" >
 <!--        指定插入name=search的插槽-->
         <a class="header_search" slot="search">
           <i class="iconfont icon-sousuo"></i>
@@ -18,54 +18,14 @@
     <nav class="msite_nav border-1px">
       <div class="swiper-container">
         <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <a href="javascript:" class="link_to_food">
+          <div class="swiper-slide" v-for="(categorys,index) in categorysArr" :key="index">
+            <a href="javascript:" class="link_to_food" v-for="(category,index) in categorys" v-bind:key="index">
               <div class="food_container">
-                <img src="./images/nav/9.jpg">
+                <img :src="baseUrl+category.image_url">
               </div>
-              <span>甜品饮品</span>
+              <span>{{category.title}}</span>
             </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/10.jpg">
-              </div>
-              <span>商超便利</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/11.jpg">
-              </div>
-              <span>美食</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/12.jpg">
-              </div>
-              <span>简餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/13.jpg">
-              </div>
-              <span>新店特惠</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/14.jpg"></div>
-              <span>准时达</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/1.jpg">
-              </div>
-              <span>预订早餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/2.jpg">
-              </div>
-              <span>土豪推荐</span>
-            </a>
+
           </div>
         </div>
         <div class="swiper-pagination"></div>
@@ -86,21 +46,56 @@
 <script>
   import Swiper from 'swiper';
   import 'swiper/dist/css/swiper.min.css';
+  import {mapState} from 'vuex';
   import HeaderTop from '../../components/HeaderTop/HeaderTop';
   import ShopList from '../../components/ShopList/ShopList.vue';
   export default {
     name: "Msite",
+    data() {
+      return {
+        baseUrl: 'https://fuss10.elemecdn.com/'
+      }
+    },
     components:{
       HeaderTop,ShopList
     },
+    //侦听属性
+    watch:{
+      categorys(value){//value是它自己的加强对象
+        //将回调延迟到下次 DOM 更新循环之后执行，不然这个渲染会被无视
+        this.$nextTick(() => {
+          new Swiper('.swiper-container',{
+            pagination:{
+              el:'.swiper-pagination'
+            },
+            loop:true
+          })
+        })
+      }
+    },
+    computed:{
+      //vuex ,相当于把state映射到data
+      ...mapState(['address','categorys']),
+      //根据categorys生成二维数组
+      categorysArr(){
+        const {categorys}=this;
+        let arr=[];
+        let minArr=[];
+        categorys.forEach(c=>{
+          if(minArr.length===8){
+            arr.push(minArr);
+            minArr=[];
+          }
+          minArr.push(c);
+
+        });
+        return arr;
+      }
+    },
     //vue生命周期钩子
-    mounted() {
-      new Swiper('.swiper-container',{
-        pagination:{
-          el:'.swiper-pagination'
-        },
-        loop:true
-      })
+    created() {
+      this.$store.dispatch('getCategorys');
+
     }
   }
 </script>
@@ -137,15 +132,15 @@
                   display inline-block
                   width 50px
                   height 50px
-                span
-                  display block
-                  width 100%
-                  text-align center
-                  font-size 13px
-                  color #666
-                .swiper-pagination
-                  >span.swiper-pagination-bullet-active
-                    background #02a774
+              span
+                display block
+                width 100%
+                text-align center
+                font-size 13px
+                color #666
+              .swiper-pagination
+                >span.swiper-pagination-bullet-active
+                  background #02a774
     .msite_shop_list
       top-border-1px(#e4e4e4)
       margin-top 10px

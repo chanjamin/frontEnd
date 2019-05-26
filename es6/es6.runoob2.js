@@ -303,7 +303,7 @@
     // async 函数返，可以使用 then 方法添加回调函数。
 
     async function helloAsync(){
-        return 'helloAsync'
+        return (console.log("hell Async"))
     }
     console.info(helloAsync instanceof Promise)
     helloAsync().then(v=>console.log(v)).catch()
@@ -311,10 +311,12 @@
     // await 在异步函数中使用同步行为
 
     function timeout(){
-        setTimeout(console.log("await 在异步函数中使用同步行为"),500)
+        setTimeout(()=>console.log("await 在异步函数中使用同步行为"),1000)
     }
     async function helloAsync2() {
         await timeout();
         console.log("helloAsync2")
     }
+
+    helloAsync2()
 }

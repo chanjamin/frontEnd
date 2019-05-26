@@ -35,3 +35,4 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 #####vue
 * 组件有两种导出方式：1,vue.component();2,export;他们在props上写法有些区别
 *  vuex 中使用meta属性配合v-if完成显示隐藏功能
+* vuex 管理状态，state,mutation,mutation-types,action
