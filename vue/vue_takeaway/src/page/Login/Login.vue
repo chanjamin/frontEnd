@@ -9,14 +9,16 @@
         </div>
       </div>
       <div class="login_content">
-        <form>
-          <div :class="{on:loginWay}" >
+        <form @submit.prevent="login">
+          <div :class="{on:loginWay}">
             <section class="login_message">
               <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
-              <button class="get_verification" :class="{right_phone:rightPhone}" @click.prevent="getCode">{{computeTime>0?`${computeTime}s`:`获取验证码`}}</button>
+              <button class="get_verification" :class="{right_phone:rightPhone}" @click.prevent="getCode" >
+                {{computeTime>0?`${computeTime}s`:`获取验证码`}}
+              </button>
             </section>
             <section class="login_verification">
-              <input type="tel" maxlength="8" placeholder="验证码">
+              <input type="tel" maxlength="8" placeholder="验证码" v-model="code">
             </section>
             <section class="login_hint">
               温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
@@ -26,11 +28,11 @@
           <div :class="{on:!loginWay}">
             <section>
               <section class="login_message">
-                <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名" v-model="name">
               </section>
               <section class="login_verification">
-                <input type="text"  placeholder="密码" v-if="showPwd" v-model="pwd">
-                <input type="password"  placeholder="密码" v-else v-model="pwd">
+                <input type="text" placeholder="密码" v-if="showPwd" v-model="pwd">
+                <input type="password" placeholder="密码" v-else v-model="pwd">
                 <div class="switch_button" :class="{on:showPwd,off:!showPwd}" @click="showPwd=!showPwd">
                   <div class="switch_circle" :class="{right:showPwd}"></div>
                   <span class="switch_text" v-if="!showPwd">...</span>
@@ -38,12 +40,13 @@
                 </div>
               </section>
               <section class="login_message">
-                <input type="text" maxlength="11" placeholder="验证码">
+                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
                 <img class="get_verification" src="./images/captcha.svg" alt="captcha">
               </section>
             </section>
           </div>
-          <button class="login_submit">登录</button>
+          <button type="submit" class="login_submit">登录</button>
+          <!--<button v-on:click="openTip('123414')">asdfadf</button>-->
         </form>
         <a href="javascript:;" class="about_us">关于我们</a>
       </div>
@@ -54,23 +57,23 @@
 
     <!--<AlertTip alert-text="alertText"></AlertTip>-->
     <!--没有冒号表示直接传值-->
-    <!--<AlertTip :alert-text="alertText"></AlertTip>-->
+    <AlertTip :alert-text="alertText" v-show="alertShow" @closeTip="closeTip"></AlertTip>
   </div>
 </template>
 
 <script>
   import AlertTip from "../../components/AlertTip/AlertTip";
-  import {reqSendCode} from "../../api";
+  import {reqPwdLogin, reqSendCode, reqSmsLogin} from "../../api";
 
   export default {
     name: "Login",
-    data(){
-      return{
+    data() {
+      return {
         loginWay: true, // true代表短信登陆, false代表密码
         computeTime: 0, // 计时的时间
         showPwd: false, // 是否显示密码
         phone: '', // 手机号
-        code:'', // 短信验证码
+        code: '', // 短信验证码
         name: '', // 用户名
         pwd: '', // 密码
         captcha: '', // 图形验证码
@@ -78,35 +81,73 @@
         alertShow: false, // 是否显示警告框
       }
     },
-    computed:{
-        rightPhone(){
-          return /^1\d{10}/.test(this.phone)
-         }
+    computed: {
+      rightPhone() {
+        return /^1\d{10}/.test(this.phone)
+      }
     },
     components: {AlertTip},
-    methods:{
-      showAlt: (msg) => {
-        this.alertShow=true;
-        this.alertText=msg
+    methods: {
+      openTip:function(msg){
+        this.alertShow =true;
+        this.alertText = msg
       },
-      async getCode(){
-        if(!this.computeTime){
-          this.computeTime=30;
-          let interval=setInterval(()=>{
+      closeTip:function(){
+        this.alertShow=false;
+        this.alertText=''
+      },
+      async getCode() {
+        if (!this.computeTime) {
+          this.computeTime = 30;
+          let interval = setInterval(() => {
             this.computeTime--;
-            if(this.computeTime<=0){
+            if (this.computeTime <= 0) {
               clearInterval(interval);
-              this.computeTime=0;
+              this.computeTime = 0;
             }
-          },1000)
+          }, 1000)
         }
         let res = await reqSendCode(this.phone);
-        if(res.code===1){
-          this.showAlt(res.msg);
-          this.computeTime=0;
+        if (res.code === 1) {
+          this.openTip(res.msg);
+          this.computeTime = 0;
+        }
+      },
+      async login() {
+        let res;
+        if (this.loginWay) {
+          const {phone, rightPhone, code} = this;
+          if (!rightPhone){
+            this.openTip('手机号不正确')
+            return
+          }
+          else if (!/\d{6}/.test(code)) {
+            // 验证必须是6位数字
+            this.openTip('验证必须是6位数字');
+            return
+          }
+          else
+            res= await reqSmsLogin(phone,code);
+        } else {
+          const {name, pwd, captcha} = this
+          if(!this.name) {
+            // 用户名必须指定
+            this.openTip('用户名必须指定')
+            return
+          } else if(!this.pwd) {
+            // 密码必须指定
+            this.openTip('密码必须指定')
+            return
+          } else if(!this.captcha) {
+            // 验证码必须指定
+            this.openTip('验证码必须指定')
+            return
+          }
+          // 发送ajax请求密码登陆
+          res =await reqPwdLogin(name, pwd, captcha)
         }
       }
-    }
+    },
   }
 </script>
 
