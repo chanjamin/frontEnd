@@ -40,8 +40,9 @@
                 </div>
               </section>
               <section class="login_message">
-                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
-                <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                <!--注册ref下面可以$ref引用这个标签-->
+                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha"  >
+                <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha" v-on:click="newCaptcha()" ref="captcha">
               </section>
             </section>
           </div>
@@ -95,6 +96,9 @@
       closeTip:function(){
         this.alertShow=false;
         this.alertText=''
+      },
+      newCaptcha(){
+        this.$refs.captcha.src = 'http://localhost:4000/captcha?time='+Date.now()
       },
       async getCode() {
         if (!this.computeTime) {
