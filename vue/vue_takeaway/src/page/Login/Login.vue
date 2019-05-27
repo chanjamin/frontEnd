@@ -4,13 +4,13 @@
       <div class="login_header">
         <h2 class="login_logo">硅谷外卖</h2>
         <div class="login_header_title">
-          <a href="javascript:;" class="on">短信登录</a>
-          <a href="javascript:;">密码登录</a>
+          <a href="javascript:;" :class="loginWay?'on':undefined" @click="loginWay=!loginWay">短信登录</a>
+          <a href="javascript:;" :class="{on:!loginWay}" @click="loginWay=!loginWay">密码登录</a>
         </div>
       </div>
       <div class="login_content">
         <form>
-          <div class="on">
+          <div :class="{on:loginWay}" >
             <section class="login_message">
               <input type="tel" maxlength="11" placeholder="手机号">
               <button disabled="disabled" class="get_verification">获取验证码</button>
@@ -23,7 +23,7 @@
               <a href="javascript:;">《用户服务协议》</a>
             </section>
           </div>
-          <div>
+          <div :class="{on:!loginWay}">
             <section>
               <section class="login_message">
                 <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
@@ -49,12 +49,32 @@
           <i class="iconfont icon-jiantou2"></i>
           </span>
     </div>
+
+    <!--<AlertTip alert-text="alertText"></AlertTip>-->
+    <!--没有冒号表示直接传值-->
+    <!--<AlertTip :alert-text="alertText"></AlertTip>-->
   </div>
 </template>
 
 <script>
+  import AlertTip from "../../components/AlertTip/AlertTip";
   export default {
-    name: "Login"
+    name: "Login",
+    data(){
+      return{
+        loginWay: true, // true代表短信登陆, false代表密码
+        computeTime: 0, // 计时的时间
+        showPwd: false, // 是否显示密码
+        phone: '', // 手机号
+        code:'', // 短信验证码
+        name: '', // 用户名
+        pwd: '', // 密码
+        captcha: '', // 图形验证码
+        alertText: '', // 提示文本
+        alertShow: false, // 是否显示警告框
+      }
+    },
+    components: {AlertTip}
   }
 </script>
 
