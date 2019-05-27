@@ -29,10 +29,12 @@
                 <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="密码">
-                <div class="switch_button off">
-                  <div class="switch_circle"></div>
-                  <span class="switch_text">...</span>
+                <input type="text"  placeholder="密码" v-if="showPwd" v-model="pwd">
+                <input type="password"  placeholder="密码" v-else v-model="pwd">
+                <div class="switch_button" :class="{on:showPwd,off:!showPwd}" @click="showPwd=!showPwd">
+                  <div class="switch_circle" :class="{right:showPwd}"></div>
+                  <span class="switch_text" v-if="!showPwd">...</span>
+                  <span class="switch_text" v-else>abc</span>
                 </div>
               </section>
               <section class="login_message">
