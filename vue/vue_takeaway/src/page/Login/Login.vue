@@ -13,7 +13,7 @@
           <div :class="{on:loginWay}" >
             <section class="login_message">
               <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
-              <button disabled="disabled" class="get_verification" :class="{right_phone:rightPhone}">获取验证码</button>
+              <button class="get_verification" :class="{right_phone:rightPhone}" @click.prevent="getCode">{{computeTime>0?`${computeTime}s`:`获取验证码`}}</button>
             </section>
             <section class="login_verification">
               <input type="tel" maxlength="8" placeholder="验证码">
@@ -58,6 +58,8 @@
 
 <script>
   import AlertTip from "../../components/AlertTip/AlertTip";
+  import {reqSendCode} from "../../api";
+
   export default {
     name: "Login",
     data(){
@@ -79,7 +81,30 @@
           return /^1\d{10}/.test(this.phone)
          }
     },
-    components: {AlertTip}
+    components: {AlertTip},
+    methods:{
+      showAlt: (msg) => {
+        this.alertShow=true;
+        this.alertText=msg
+      },
+      async getCode(){
+        if(!this.computeTime){
+          this.computeTime=30;
+          let interval=setInterval(()=>{
+            this.computeTime--;
+            if(this.computeTime<=0){
+              clearInterval(interval);
+              this.computeTime=0;
+            }
+          },1000)
+        }
+        let res = await reqSendCode(this.phone);
+        if(res.code===1){
+          this.showAlt(res.msg);
+          this.computeTime=0;
+        }
+      }
+    }
   }
 </script>
 
