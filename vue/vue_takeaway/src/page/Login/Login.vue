@@ -13,7 +13,7 @@
           <div :class="{on:loginWay}">
             <section class="login_message">
               <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
-              <button class="get_verification" :class="{right_phone:rightPhone}" @click.prevent="getCode" >
+              <button class="get_verification" :class="{right_phone:rightPhone}" @click.prevent="getCode">
                 {{computeTime>0?`${computeTime}s`:`获取验证码`}}
               </button>
             </section>
@@ -41,8 +41,9 @@
               </section>
               <section class="login_message">
                 <!--注册ref下面可以$ref引用这个标签-->
-                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha"  >
-                <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha" v-on:click="newCaptcha()" ref="captcha">
+                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
+                <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha"
+                     v-on:click="newCaptcha()" ref="captcha">
               </section>
             </section>
           </div>
@@ -89,16 +90,16 @@
     },
     components: {AlertTip},
     methods: {
-      openTip:function(msg){
-        this.alertShow =true;
+      openTip: function (msg) {
+        this.alertShow = true;
         this.alertText = msg
       },
-      closeTip:function(){
-        this.alertShow=false;
-        this.alertText=''
+      closeTip: function () {
+        this.alertShow = false;
+        this.alertText = ''
       },
-      newCaptcha(){
-        this.$refs.captcha.src = 'http://localhost:4000/captcha?time='+Date.now()
+      newCaptcha() {
+        this.$refs.captcha.src = 'http://localhost:4000/captcha?time=' + Date.now()
       },
       async getCode() {
         if (!this.computeTime) {
@@ -121,7 +122,7 @@
         let res;
         if (this.loginWay) {
           const {phone, rightPhone, code} = this;
-          if (!rightPhone){
+          if (!rightPhone) {
             this.openTip('手机号不正确')
             return
           }
@@ -131,24 +132,36 @@
             return
           }
           else
-            res= await reqSmsLogin(phone,code);
+            res = await reqSmsLogin(phone, code);
         } else {
           const {name, pwd, captcha} = this
-          if(!this.name) {
+          if (!this.name) {
             // 用户名必须指定
             this.openTip('用户名必须指定')
             return
-          } else if(!this.pwd) {
+          } else if (!this.pwd) {
             // 密码必须指定
             this.openTip('密码必须指定')
             return
-          } else if(!this.captcha) {
+          } else if (!this.captcha) {
             // 验证码必须指定
             this.openTip('验证码必须指定')
             return
           }
           // 发送ajax请求密码登陆
-          res =await reqPwdLogin(name, pwd, captcha)
+          res = await reqPwdLogin(name, pwd, captcha)
+        }
+
+        console.log(res)
+        //登陆成功
+        if (res.code === 0) {
+          //保存userInfo
+          const uif = res.data;
+          this.$store.dispatch('recordUserInfo', uif);
+          this.$router.replace('/profile')
+        } else {
+          this.newCaptcha();
+          this.openTip(res.msg)
         }
       }
     },

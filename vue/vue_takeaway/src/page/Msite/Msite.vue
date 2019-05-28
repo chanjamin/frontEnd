@@ -10,7 +10,10 @@
       </router-link>
 
       <router-link class="header_login" slot="login" :to="userInfo._id?'/userinfo':'/login'">
-        <span class="header_login_text">登录|注册</span>
+        <span class="header_login_text" v-if="!userInfo._id">登录|注册</span>
+        <span class="header_login_text" v-else>
+          <i class="iconfont icon-wodefill"></i>
+        </span>
       </router-link>
 
     </HeaderTop>

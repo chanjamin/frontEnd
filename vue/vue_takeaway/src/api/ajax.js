@@ -11,11 +11,11 @@ export default function ajax(url = '', data = {}, type = 'GET') {
   return new Promise((resolve, reject) => {
     let promise;
     if (type === 'GET') {
-      let strData;
+      let strData='';
       Object.keys(data).forEach(function (key) {
         strData += key + '=' + data[key] + '&'
       });
-      if (strData!==undefined&&strData !== '') {
+      if (strData !== '') {
         strData = strData.substring(0, strData.lastIndexOf('&'));
         url = url + '?' + strData
       }
