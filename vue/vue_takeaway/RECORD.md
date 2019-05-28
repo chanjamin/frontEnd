@@ -39,3 +39,4 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 * 模板中变量的来源：props,data,computed，其中props是组件中使用的
 * @click.prevent 阻止默认行为
 * vue2 method中箭头函数无法获取this对象，要用普通函数
+* vue中模板解析：a.b.c三层时要考虑对象初始值是否为空问题
