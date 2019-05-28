@@ -1,5 +1,7 @@
 <template>
-    
+    <div>
+      ShopHeader
+    </div>
 </template>
 
 <script>
