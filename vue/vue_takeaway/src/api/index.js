@@ -33,3 +33,15 @@ export const reqUser = () => ajax('/api/userinfo');
 */
 export const reqLogout = () => ajax('/api/logout')
 
+/**
+ * 获取商家信息
+ */
+export const reqShopInfo = () => ajax('/shop_info')
+/**
+ * 获取商家评价数组
+ */
+export const reqShopRatings = () => ajax('/shop_ratings')
+/**
+ * 获取商家商品数组
+ */
+export const reqShopGoods = () => ajax('/shop_goods')
