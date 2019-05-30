@@ -13,7 +13,7 @@ export default {
   //es6计算属性
   [RECEIVE_ADDRESS](state, wrapper) {
     // console.log(wrapper.address.address)
-    console.log(wrapper)
+    // console.log(wrapper)
     state.address = wrapper.address;
   },
   //{category}为方法中的变量解构
