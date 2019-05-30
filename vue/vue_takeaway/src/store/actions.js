@@ -1,5 +1,7 @@
 import {reqAddress, reqCategorys, reqShop, reqUser, reqLogout, reqShopInfo, reqShopRatings, reqShopGoods} from '../api'
 import {
+  DECREMENT_FOOD_COUNT,
+  INCREMENT_FOOD_COUNT,
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS, RECEIVE_GOODS,
   RECEIVE_INFO, RECEIVE_RATINGS,
@@ -77,4 +79,12 @@ export default {
 //       cb && cb()
     }
   },
+
+  updateFoodCount({commit},{food,isAdd}){
+    if(isAdd){
+      commit(INCREMENT_FOOD_COUNT,{food})
+    }else {
+      commit(DECREMENT_FOOD_COUNT,{food})
+    }
+  }
 }
