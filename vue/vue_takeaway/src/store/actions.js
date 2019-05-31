@@ -1,5 +1,6 @@
 import {reqAddress, reqCategorys, reqShop, reqUser, reqLogout, reqShopInfo, reqShopRatings, reqShopGoods} from '../api'
 import {
+  CLEAR_CART,
   DECREMENT_FOOD_COUNT,
   INCREMENT_FOOD_COUNT,
   RECEIVE_ADDRESS,
@@ -86,5 +87,9 @@ export default {
     }else {
       commit(DECREMENT_FOOD_COUNT,{food})
     }
-  }
+  },
+  // 同步清空购物车
+  clearCart({commit}) {
+    commit(CLEAR_CART)
+  },
 }

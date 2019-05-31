@@ -3,7 +3,8 @@
     <div class="goods">
       <div class="menu-wrapper" ref="menuWrapper">
         <ul>
-          <li class="menu-item " v-for="(good,index) in goods" :key="index" :class="{current:index===currentIndex}" @click="navigateByIndex(index)">
+          <li class="menu-item " v-for="(good,index) in goods" :key="index" :class="{current:index===currentIndex}"
+              @click="navigateByIndex(index)">
 <span class="text bottom-border-1px">
 <img class="icon" :src="good.icon" v-if="good.icon">
   {{good.name}}
@@ -11,7 +12,7 @@
           </li>
         </ul>
       </div>
-      <div class="foods-wrapper" ref="foodsWrapper" >
+      <div class="foods-wrapper" ref="foodsWrapper">
         <ul>
           <li class="food-list-hook" v-for="(good,index) in goods">
             <h1 class="title">{{good.name }}</h1>
@@ -39,6 +40,7 @@
           </li>
         </ul>
       </div>
+      <ShopCart/>
     </div>
   </div>
 
@@ -48,10 +50,14 @@
   import {mapState} from 'vuex'
   import BScroll from 'better-scroll'
   import CartControl from "../../../components/CartControl/CartControl";
+  import ShopCart from '../../../components/ShopCart/ShopCart'
 
   export default {
     name: "ShopGoods",
-    components: {CartControl},
+    components: {
+      CartControl,
+      ShopCart
+    },
     data() {
       return {
         scrollY: 0,
@@ -62,7 +68,7 @@
     mounted() {
       this.$store.dispatch("getShopGoods");
       //v-for渲染完成
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         this.initScroll();
         this.initTops();
       })
@@ -73,17 +79,16 @@
         // 得到条件数据
         const {scrollY, tops} = this
         // 根据条件计算产生一个结果
-        const index = tops.findIndex((top, index) => {
+        let index = tops.findIndex((top, index) => {
           // scrollY>=当前top && scrollY<下一个top
           return scrollY >= top && scrollY < tops[index + 1]
         })
         // 返回结果
-        // console.log(index)
         return index
       }
     },
     methods: {
-      initScroll(){
+      initScroll() {
         new BScroll('.menu-wrapper', {
           click: true
         })
@@ -102,7 +107,7 @@
           this.scrollY = Math.abs(y)
         });
       },
-      initTops(){
+      initTops() {
         // 1. 初始化tops
         const tops = []
         let top = 0
@@ -116,9 +121,9 @@
         })
         // 3. 更新数据
         this.tops = tops
-        console.log(tops)
+        console.log(this.tops)
       },
-      navigateByIndex(index){
+      navigateByIndex(index) {
         // 得到目标位置的scrollY
         const scrollY = this.tops[index]
         // 立即更新scrollY(让点击的分类项成为当前分类)
