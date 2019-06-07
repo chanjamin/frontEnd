@@ -1,10 +1,11 @@
 <template>
   <div class="cartcontrol">
     <transition name="move">
-      <div class="iconfont icon-roundclose" v-show="food.count" @click="updateFood(false)"></div>
+      <!--stop停止事件冒泡-->
+      <div class="iconfont icon-roundclose" v-show="food.count" @click.stop="updateFood(false)"></div>
     </transition>
     <div class="cart-count" v-if="food.count"> {{food.count}}</div>
-    <div class="iconfont icon-jiahao2fill" @click="updateFood({isAdd:true})"></div>
+    <div class="iconfont icon-jiahao2fill" @click.stop="updateFood({isAdd:true})"></div>
   </div>
 </template>
 
