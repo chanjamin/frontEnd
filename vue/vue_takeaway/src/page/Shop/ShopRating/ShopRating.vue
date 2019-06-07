@@ -73,7 +73,6 @@
   import Star from '../../../components/Star/Star';
   import {mapState, mapGetters} from 'vuex'
   import BScroll from 'better-scroll';
-  import dateFormat from '../../../util/dateFormat'
 
   export default {
     name: "ShopRating",
@@ -84,12 +83,6 @@
       return {
         selectType: 2,
         onlyShowContented: false
-      }
-    },
-    filters: {
-      formatDate(time) {
-        let date = new Date(time);
-        return dateFormat.formatDate(date, "yyyy.MM.dd");
       }
     },
     computed: {
