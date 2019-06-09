@@ -5,7 +5,9 @@ import ajax from './ajax';
  * @param geohash
  * @returns {Promise<any>}
  */
-export const reqAddress = (geohash) =>{return ajax('/api/position/' + geohash);}
+export const reqAddress = (geohash) => {
+  return ajax('/api/position/' + geohash);
+}
 
 /** * 获 取 msite
  页 面 食 品 分 类 列 表
@@ -45,3 +47,8 @@ export const reqShopRatings = () => ajax('/shop_ratings')
  * 获取商家商品数组
  */
 export const reqShopGoods = () => ajax('/shop_goods')
+
+/**
+ * * 根 据 关 键 字 搜 索 相 关 商 家 数 组
+ * */
+export const reqSearchShop = (geohash, keyword) => ajax('/api/search_shops', {geohash, keyword})

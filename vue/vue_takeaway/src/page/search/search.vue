@@ -5,8 +5,8 @@
       <input type="search" placeholder="请输入商家名称" class="search_input" v-model="keyword">
       <input type="submit" class="search_submit">
     </form>
-    <section class="list" v-if="!noSearchShops">
-      <ul class="list_container">
+    <section class="list" v-if="searchShops.length" ref="wrapper">
+      <ul class="list_container" ref="ul">
         <!--:to="'/shop?id='+item.id"-->
         <router-link :to="{path:'/shop', query:{id:item.id}}" tag="li"
                      v-for="item in searchShops" :key="item.id" class="list_li">
@@ -32,13 +32,47 @@
 
 <script>
   import HeaderTop from '../../components/HeaderTop/HeaderTop';
+  import {mapState} from 'vuex'
+  import BScroll from 'better-scroll'
 
   export default {
-        name: "search",
-      components:{
-          HeaderTop:HeaderTop
+    name: "search",
+    components: {
+      HeaderTop: HeaderTop
+    },
+    data(){
+      return{
+        imgBaseUrl: 'http://cangdu.org:8001/img/',
+        keyword:''
       }
+    },
+    methods:{
+      search(){
+        const keyword=this.keyword.trim();
+        this.$store.dispatch('searchShop',keyword)
+      },
+      calHeight(){
+        let height=0;
+        let liArray = document.getElementsByClassName("list_li");
+        Array.prototype.slice.call(liArray).forEach(e=>{height+=e.offsetHeight})
+        liArray--;
+        this.$refs.ul.style.height=height+'px'
+      }
+    },
+    computed: {
+      ...mapState(['searchShops'])
+    },
+    watch:{
+      searchShops(){
+        this.$nextTick(()=> {
+          if (this.searchShops.length) {
+            this.calHeight();
+            new BScroll(this.$refs.wrapper, {click: true})
+          }
+        })
+        }
     }
+  }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
@@ -47,17 +81,20 @@
     width 100%
     height 100%
     overflow hidden
+
     .search_form
       clearFix()
       margin-top 45px
       background-color #fff
       padding 12px 8px
+
       input
         height 35px
         padding 0 4px
         border-radius 2px
         font-weight bold
         outline none
+
         &.search_input
           float left
           width 79%
@@ -65,6 +102,7 @@
           font-size 14px
           color #333
           background-color #f2f2f2
+
         &.search_submit
           float right
           width 18%
@@ -74,28 +112,36 @@
           background-color #02a774
 
     .list
+      height 100%
       .list_container
         background-color: #fff;
+
         .list_li
           display: flex;
           justify-content: center;
           padding: 10px
           border-bottom: 1px solid $bc;
+
           .item_left
             margin-right: 10px
+
             .restaurant_img
               width 50px
               height 50px
               display block
+
           .item_right
             font-size 12px
             flex 1
+
             .item_right_text
               p
                 line-height 12px
                 margin-bottom 6px
+
                 &:last-child
                   margin-bottom 0
+
     .search_none
       margin: 0 auto
       color: #333

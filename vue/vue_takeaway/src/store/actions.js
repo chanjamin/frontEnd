@@ -1,11 +1,11 @@
-import {reqAddress, reqCategorys, reqShop, reqUser, reqLogout, reqShopInfo, reqShopRatings, reqShopGoods} from '../api'
+import {reqAddress, reqCategorys, reqShop, reqUser, reqLogout, reqShopInfo, reqShopRatings, reqShopGoods, reqSearchShop} from '../api'
 import {
   CLEAR_CART,
   DECREMENT_FOOD_COUNT,
   INCREMENT_FOOD_COUNT,
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS, RECEIVE_GOODS,
-  RECEIVE_INFO, RECEIVE_RATINGS,
+  RECEIVE_INFO, RECEIVE_RATINGS, RECEIVE_SEARCH_SHOPS,
   RECEIVE_SHOPS,
   RECEIVE_USER_INFO,
   RESET_USER_INFO
@@ -69,11 +69,11 @@ export default {
       const ratings = result.data
       commit(RECEIVE_RATINGS, {ratings})
       //callback 用于数据更新了, 通知一下组件
-      callback&&callback();
+      callback && callback();
     }
   },
 // 异步获取商家商品列表
-  async getShopGoods({commit},cb) {
+  async getShopGoods({commit}, cb) {
     const result = await reqShopGoods()
     if (result.code === 0) {
       const goods = result.data
@@ -94,4 +94,16 @@ export default {
   clearCart({commit}) {
     commit(CLEAR_CART)
   },
+
+  // 异 步 搜 索 商 家 列 表
+  async searchShop({commit, state}, keyword) {
+    // const {latitude, longitude} = state
+    const latitude=state.latitude;
+    const longitude=state.longitude;
+    const result = await reqSearchShop(latitude + ',' + longitude, keyword)
+    if (result.code===0) {
+      commit(RECEIVE_SEARCH_SHOPS, {searchShops: result.data})
+    }
+  },
+
 }

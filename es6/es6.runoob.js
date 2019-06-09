@@ -19,8 +19,9 @@
     let [p = 2] = [3]
     console.log(p)
 
+    //等于取对象的值
     let {foo, bar} = {foo: 'go', bar: 'to heaven'}
-    console.log(foo, bar)
+    console.log(foo, bar)// go to haven.
     let {baz: fol} = {baz: 'aaa'}
     console.log(fol)
 //除了考试，有啥意义

@@ -5,7 +5,7 @@ import {
   CLEAR_CART,
   DECREMENT_FOOD_COUNT, INCREMENT_FOOD_COUNT,
   RECEIVE_ADDRESS,
-  RECEIVE_CATEGORYS, RECEIVE_GOODS, RECEIVE_INFO, RECEIVE_RATINGS,
+  RECEIVE_CATEGORYS, RECEIVE_GOODS, RECEIVE_INFO, RECEIVE_RATINGS, RECEIVE_SEARCH_SHOPS,
   RECEIVE_SHOPS,
   RECEIVE_USER_INFO,
   RESET_USER_INFO
@@ -63,5 +63,9 @@ export default {
   [CLEAR_CART](state) {
     state.cartFoods.forEach(food=>food.count=0)//？因为food实例和count已经绑定了
     state.cartFoods=[];
+  },
+
+  [RECEIVE_SEARCH_SHOPS](state,{searchShops}){
+      state.searchShops=searchShops
   }
 }
