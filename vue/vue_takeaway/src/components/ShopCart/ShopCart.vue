@@ -13,7 +13,7 @@
           <div class="desc">另需配送费￥{{info.deliveryPrice}}元</div>
         </div>
         <div class="content-right">
-          <div class="pay" :class="payClass">
+          <div class="pay" :class="payClass" @click="openTip('想结算？还不给呢！')">
             {{payText}}
           </div>
         </div>
@@ -40,6 +40,8 @@
 
     </div>
     <div class="list-mask" v-show="listShow" @click="toggleShow"></div>
+    <alert-tip :alert-text="alertText" v-show="alertShow" @closeTip="closeTip"></alert-tip>
+
   </div>
 </template>
 
@@ -48,11 +50,14 @@
   import BScroll from 'better-scroll'
   import {mapState, mapGetters} from 'vuex'
   import CartControl from '../CartControl/CartControl.vue'
+  import AlertTip from "../AlertTip/AlertTip";
 
   export default {
     data () {
       return {
-        isShow: false
+        isShow: false,
+        alertShow:false,
+        alertText:''
       }
     },
 
@@ -110,7 +115,14 @@
           this.isShow = !this.isShow
         }
       },
-
+      openTip(str){
+        this.alertText=str;
+        this.alertShow=true;
+      },
+      closeTip: function () {
+        this.alertShow = false;
+        this.alertText = ''
+      },
       clearCart () {
         MessageBox.confirm('确定清空购物车吗?').then(action => {
           this.$store.dispatch('clearCart')
@@ -118,6 +130,7 @@
       }
     },
     components: {
+      AlertTip,
       CartControl
     }
   }

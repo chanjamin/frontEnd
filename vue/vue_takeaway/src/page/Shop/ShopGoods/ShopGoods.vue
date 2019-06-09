@@ -69,12 +69,16 @@
       }
     },
     mounted() {
-      this.$store.dispatch("getShopGoods");
+      this.$store.dispatch("getShopGoods", () => {
+        this.$nextTick(() => {
+          this.initScroll();
+          this.initTops();
+        })
+      });
       //v-for渲染完成
-      this.$nextTick(() => {
-        this.initScroll();
-        this.initTops();
-      })
+      // this.$nextTick(() => {
+
+      // })
     },
     computed: {
       ...mapState(['goods']),
