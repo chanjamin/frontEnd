@@ -1,3 +1,3 @@
 # frontEnd
 this is a demo made by me following shangguigu vue tutorial.
-<img src="https://upload-images.jianshu.io/upload_images/4731247-2a2a21ca0bd438a4.gif?imageMogr2/auto-orient/strip" style="zoom:50%;" />
+<img src="https://upload-images.jianshu.io/upload_images/4731247-2a2a21ca0bd438a4.gif" style="zoom:50%;" />
